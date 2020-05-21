@@ -1,3 +1,6 @@
 docker build --force-rm  -t  igorguilherme/jetty:9.1.5-7u221-jre .
 
 docker push igorguilherme/jetty:9.1.5-7u221-jre
+
+
+docker run igorguilherme/jetty:9.1.5-7u221-jre

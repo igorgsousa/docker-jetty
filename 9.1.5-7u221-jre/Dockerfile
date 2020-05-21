@@ -8,19 +8,21 @@ ENV JETTY_TGZ_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distrib
 
 
 RUN set -xe \
-&& mkdir -p "$JETTY_HOME" \
-&& cd $JETTY_HOME \
-&& curl -SL "$JETTY_TGZ_URL" -o jetty.tar.gz \
+&& mkdir -p "$JETTY_HOME"
+
+WORKDIR $JETTY_HOME
+
+RUN curl -SL "$JETTY_TGZ_URL" -o jetty.tar.gz \
 && curl -SL "$JETTY_TGZ_URL.asc" -o jetty.tar.gz.asc \
 && tar -xvf jetty.tar.gz --strip-components=1 \
 && sed -i '/jetty-logging/d' etc/jetty.conf \
-&& rm -fr jetty.tar.gz* \
+&& rm -fr jetty.tar.gz*  \
 && mkdir -p "$JETTY_BASE" \
 && cd $JETTY_BASE \
 && java -jar "$JETTY_HOME/start.jar" --add-to-startd=http \
 && mkdir -p "$TMPDIR" \
 && groupadd -r jetty && useradd -r -g jetty jetty \
-&& chown -R jetty:jetty "$JETTY_HOME" "$JETTY_BASE" "$TMPDIR"\
+&& chown -R jetty:jetty "$JETTY_HOME" "$JETTY_BASE" "$TMPDIR" \
 && rm -rf /tmp/hsperfdata_root
 
 
